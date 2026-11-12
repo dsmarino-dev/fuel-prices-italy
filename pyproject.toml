@@ -25,3 +25,10 @@ dev = [
     "pytest>=9.2.0",
     "ruff>=0.17.4",
 ]
+
+[tool.pyright]
+# Static type checking used by Pylance in VS Code
+typeCheckingMode = "standard"
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"

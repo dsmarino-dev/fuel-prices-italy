@@ -1,7 +1,7 @@
 [project]
 name = "fuel-prices-italy"
 version = "0.1.0"
-description = "Add your description here"
+description = "Daily data pipeline on Italian fuel prices: MIMIT open data, EIA and ECB APIs"
 readme = "README.md"
 authors = [
     { name = "Davide Marino", email = "210675248+dsmarino-dev@users.noreply.github.com" }
@@ -12,9 +12,6 @@ dependencies = [
     "duckdb>=2.0.0",
     "requests>=2.34.2",
 ]
-
-[project.scripts]
-fuel-prices-italy = "fuel_prices_italy:main"
 
 [build-system]
 requires = ["uv_build>=0.13.7,<0.14.0"]

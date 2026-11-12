@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from fuel-prices-italy!")
+"""Daily data pipeline on Italian fuel prices."""

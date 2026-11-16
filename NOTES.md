@@ -19,3 +19,25 @@
 - `dtComu` uses dd/MM/yyyy HH:mm:ss -> parse with explicit format.
 - Trailing spaces in text fields (e.g. address) -> trim in staging.
 - Prices can be stale: example row reported on Nov 9 appears in Nov 11 extraction.
+
+## 2026-11-16 – Meaning of the extraction date
+- "Estrazione del 2026-11-11" = snapshot of prices in force at 08:00 on Nov 11:
+  latest `dtComu` in the file is 2026-11-11 08:06; nothing after that.
+- The file is published with a delay (on Nov 16 at 17:30 the latest snapshot was Nov 15).
+  This is publication lag, not a date error: the extraction date is the correct
+  logical date -> no +1 day shift.
+- Downloader is idempotent, so it can run several times a day until a new
+  extraction date appears (Airflow sensor in week 4).
+- Oldest price in the Nov 11 snapshot was reported on 2013-05-23:
+  some "active" stations have never updated their prices -> reliability index.
+
+## Backlog – improvements to do later
+- [ ] **Schedule the MIMIT download on the Mac (launchd)** until Airflow takes over
+      in week 4: run `uv run download-mimit` twice a day (e.g. 10:00 and 20:00),
+      log to `data/logs/`. launchd runs missed jobs on wake, unlike cron.
+      Goal: accumulate daily snapshots now, so week-5 analyses have more history.
+- [ ] **Avoid full downloads when nothing changed** (week 2): the downloader fetches
+      the whole file (~3-4 MB each) before it can read the extraction date and skip.
+      Options: HTTP `Range` request for the first bytes, or `Last-Modified`/`ETag` headers.
+- [ ] **Backfill Nov 12-14 from the MIMIT quarterly archive** (daily files were not
+      downloaded on those days); archive files use a different delimiter.
